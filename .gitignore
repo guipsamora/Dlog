@@ -1,0 +1,7 @@
+*.0
+*.ns
+*.lock
+*.bson
+*.log
+reference.txt
+../data/

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>DLog</title>
+   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="./public/stylesheets/style.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.2/react-bootstrap.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+   <script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
+</head>
+<body>
+
+   <h1>DLog</h1>
+   
+   <div id="button"></div>
+
+   <div class="container">
+     <div id="container2" class=" col-md-6"></div> 
+     <div id="container" class=" col-md-6" ></div>     
+   </div>
+
+</div>
+
+<!-- REACT SCRIPT -->
+<script type="text/jsx">
+
+var Panel = ReactBootstrap.Panel, Accordion = ReactBootstrap.Accordion;
+var Button = ReactBootstrap.Button, Input = ReactBootstrap.Input;
+var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+var Modal = ReactBootstrap.Modal;
+var OverlayTrigger = ReactBootstrap.OverlayTrigger;
+var ListGroup = ReactBootstrap.ListGroup, ListGroupItem = ReactBootstrap.ListGroupItem;
+
+// variables defined
+var globalTitle = "";
+var globalReason = "";
+var globalResults = "";
+var globalContingency = "";
+var globalDate = "";
+
+// Load Recipe Items or set default Recipe Items
+var decisions = (typeof localStorage["decisionBook"] != "undefined") ? JSON.parse(localStorage["decisionBook"]) : [
+  {title: "Run Marathon", reason: "Nice To do", results: "Pumpkin Pie", contigency: "Pumpkin Pie", date: "12/03/2016"}, 
+  {title: "Run Marathon", reason: "Nice To do", results: "Pumpkin Pie", contigency: "Pumpkin Pie", date: "18/10/2016"},
+  {title: "Run Marathon", reason: "Nice To do", results: "Pumpkin Pie", contigency: "Pumpkin Pie", date: "01/15/2016"},
+];
+
+// DecisionBook class. This holds all recipes.
+var LastDecisions = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <Accordion>
+          <h3 className="text-center">Last Decisions</h3><hr/>
+          {this.props.data}
+        </Accordion>
+      </div>
+    );
+  }
+});
+
+// Decision class. This is the display for a decision in Decision
+var Decision = React.createClass({
+  remove: function() {
+    decisions.splice(this.props.index, 1);
+    update();
+  },
+
+  edit: function() {
+    globalTitle = this.props.title;
+    globalReason = this.props.reason;
+    globalResults = this.props.results;
+    globalContingency = this.props.contigency;
+    globalDate = this.props.date;
+    document.getElementById("show").click();
+  },
+
+  review: function(){
+      <Modal show={this.state.showModal} onHide={this.close}>
+      <Modal.Header closeButton>
+        <Modal.Title id="modalTitle">Review {this.props.title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <form>
+          <Input type="text" label="Decision" placeholder="Decision Title" id="title" />
+          <Input type="textarea" label="Reason" placeholder="Explain the reasons this decision was made..." id="reason"/>
+          <Input type="textarea" label="Expected Results" placeholder="What are the expected results? What do you consider to be a good or a bad result?" id="results" />
+          <Input type="textarea" label="Contigency action" placeholder="In case things go wrong, what are you going to do?" id="contigency" />
+          <Input type="date" label="Review Date" placeholder="When should this decision be reviewed?" id="date" />
+        </form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={this.add} bsStyle="primary" id="addButton">Add Decision</Button>
+        <Button onClick={this.close}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  },
+
+  render: function() {
+    console.log(this.props)
+    return (
+      <div>
+          <p><span className="bold">Reasons: </span>{this.props.reason}</p>
+          <p><span className="bold">Results: </span>{this.props.results}</p>
+          <p><span className="bold">Contingency: </span>{this.props.contingency}</p>
+          <p><span className="bold">Review Date: </span>{this.props.date}</p>
+        <DecisionList decision={this.props} />
+        <ButtonToolbar>
+          <Button bsStyle="default" id={"btn-edit"+this.props.index} onClick={this.edit}>Edit</Button>
+          <Button class="delete" bsStyle="danger" id={"btn-del"+this.props.index} onClick={this.remove}>Delete</Button>
+        </ButtonToolbar>
+      </div>
+    );
+  }
+});
+
+//DecisionList class. This lists all answers for a Decision
+var DecisionList = React.createClass({
+
+  render: function() {
+    console.log(this.props.decision)
+    if(this.props.decisions){
+      var decisionList = this.props.decision.map(function(abc) {
+
+        return (
+
+          <ListGroupItem >
+
+              
+              
+          </ListGroupItem>
+        );
+      });
+    }
+
+    return (
+      <ListGroup>
+        {decisionList}
+      </ListGroup>
+    );
+  },
+});
+
+
+// DecisionAdd class. This contains the Modal and Add Decision button
+var DecisionAdd = React.createClass({
+  getInitialState: function() {
+    return { showModal: false };
+  },
+
+  close: function() {
+    globalTitle = "";
+    globalReason = "";
+    globalResults = "";
+    globalContingency = "";
+    this.setState({ showModal: false });
+  },
+
+  open: function() {
+    this.setState({ showModal: true });
+
+    if (document.getElementById("title")) {
+      $("#title").val(globalTitle);
+      $("#reason").val(globalReason);
+      $("#results").val(globalResults);
+      $("#contigency").val(globalContingency);
+      $("#date").val(globalDate);
+
+      if (globalTitle != "") {
+        $("#modalTitle").text("Edit Decision");
+        $("#addButton").text("Edit Decision");
+      }
+
+    } else {
+        requestAnimationFrame(this.open);
+    }
+    
+  },
+
+  add: function() {
+    var title = document.getElementById("title").value;
+    var reason = document.getElementById("reason").value;
+    var results = document.getElementById("results").value;
+    var contigency = document.getElementById("contigency").value;
+    var date = document.getElementById("date").value;
+    var exists = false;
+
+
+
+    for (var i = 0; i < decisions.length; i++) {
+      if (decisions[i].title === title) {
+        decisions[i].reason = reason;
+        decisions[i].results = results;
+        decisions[i].contigency = contigency;
+        decisions[i].date = date;
+        exists = true;
+        break;
+      }
+    }
+
+    if (!exists) {
+      if (title.length < 1) title = "Untitled";
+      decisions.unshift({title: title, reason: reason, results: results, contigency: contigency, date: date});
+    }
+
+    update();
+    this.close();
+  },
+
+  render: function() {
+    return (
+      <div>
+        <Button
+          bsStyle="primary"
+          bsSize="large"
+          onClick={this.open}
+          id="show"
+        >
+          Add Decision
+        </Button>
+
+        <Modal show={this.state.showModal} onHide={this.close}>
+          <Modal.Header closeButton>
+            <Modal.Title id="modalTitle">Add a Decision</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <form>
+              <Input type="text" label="Decision" placeholder="Decision Title" id="title" />
+              <Input type="textarea" label="Reason" placeholder="Explain the reasons this decision was made..." id="reason"/>
+              <Input type="textarea" label="Expected Results" placeholder="What are the expected results? What do you consider to be a good or a bad result?" id="results" />
+              <Input type="textarea" label="Contigency action" placeholder="In case things go wrong, what are you going to do?" id="contigency" />
+              <Input type="date" label="Review Date" placeholder="When should this decision be reviewed?" id="date" />
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.add} bsStyle="primary" id="addButton">Add Decision</Button>
+            <Button onClick={this.close}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+      // <div>
+      //    <ReviewDecisions />
+      // </div>
+    );
+  }
+});
+
+// Decisions to be reviwed, based on the date
+var ReviewDecisions = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <Accordion>
+          <h3 className="text-center">Decisions to Review</h3><hr/>
+          {this.props.data}
+        </Accordion>
+      </div>
+    );
+  }
+});
+
+// Update function to display all the decisions that need to be reviewed
+function update() {
+  localStorage.setItem("decisionBook", JSON.stringify(decisions));
+  var rows = [];
+  for (var i=0; i < decisions.length; i++) {
+    rows.push(
+      <Panel header={decisions[i].title} eventKey={i} bsStyle="success" key={i}>
+        <Decision title={decisions[i].title} reason={decisions[i].reason} results={decisions[i].results} contingency={decisions[i].contigency} date={decisions[i].date} index={i} key={i}/>
+      </Panel>
+    );
+  }
+
+ReactDOM.render(<LastDecisions data={rows}/>, document.getElementById("container"));
+
+}
+
+
+
+ReactDOM.render(<DecisionAdd />, document.getElementById('button'));
+ReactDOM.render(<DecisionList />, document.getElementById('container'));
+ReactDOM.render(<ReviewDecisions />, document.getElementById('container2'));
+update(); // Initially render the recipe book
+</script>
+</body>
+</html>

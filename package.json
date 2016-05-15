@@ -1,0 +1,25 @@
+{
+  "name": "dlog",
+  "version": "1.0.0",
+  "description": "decision log tool",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guipsamora/Dlog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guipsamora/Dlog/issues"
+  },
+  "homepage": "https://github.com/guipsamora/Dlog#readme",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.4",
+    "nodemon": "^1.8.1"
+  }
+}
