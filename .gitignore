@@ -5,3 +5,4 @@
 *.log
 reference.txt
 ../data/
+../node_modules
