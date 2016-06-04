@@ -4,21 +4,21 @@ var path = require('path');
 var mongoose = require('mongoose');
 var mongodb = require('mongodb').MongoClient;
 
-
+// gets express
 var app = express();
 
+// 
 app.use(express.static('public'));
 
+// Get user  
 app.get('/', function(req, res){
    res.send("Hello World!");
 });
 
 // 
-// app.get('/user', function(req, res){
-//    res.sendStatus("ok");
-// });
-
-
+app.get('/user', function(req, res){
+   res.sendStatus("ok");
+});
 
 
 
