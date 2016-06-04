@@ -224,7 +224,13 @@ var DecisionAdd = React.createClass({
         >
           Add Decision
         </Button>
-
+		<Button
+          bsStyle="primary"
+          bsSize="large"
+          id="show"
+        >
+          Calendar
+        </Button>
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
             <Modal.Title id="modalTitle">Add a Decision</Modal.Title>
