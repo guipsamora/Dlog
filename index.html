@@ -49,6 +49,7 @@ var decisions = (typeof localStorage["decisionBook"] != "undefined") ? JSON.pars
   {title: "Run Marathon", reason: "Nice To do", results: "Pumpkin Pie", contigency: "Pumpkin Pie", date: "12/03/2016"}, 
   {title: "Run Marathon", reason: "Nice To do", results: "Pumpkin Pie", contigency: "Pumpkin Pie", date: "18/10/2016"},
   {title: "Run Marathon", reason: "Nice To do", results: "Pumpkin Pie", contigency: "Pumpkin Pie", date: "01/15/2016"},
+  {title: "Run Marathon345", reason: "Oieeee", results: "Pumpkin Pie", contigency: "Pumpkin Pie", date: "01/15/2016"},
 ];
 
 // DecisionBook class. This holds all recipes.
@@ -292,7 +293,7 @@ ReactDOM.render(<LastDecisions data={rows}/>, document.getElementById("container
 ReactDOM.render(<DecisionAdd />, document.getElementById('button'));
 ReactDOM.render(<DecisionList />, document.getElementById('container'));
 ReactDOM.render(<ReviewDecisions />, document.getElementById('container2'));
-update(); // Initially render the recipe book
+update(); // Initially render the decision
 </script>
 </body>
 </html>
