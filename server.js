@@ -20,10 +20,6 @@ app.get('/user', function(req, res){
    res.sendStatus("ok");
 });
 
-
-
-
-
 // the port that the server is listening to
 app.listen(3000, function(){
    console.log("App listening on port: 3000");
